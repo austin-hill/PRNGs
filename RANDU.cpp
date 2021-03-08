@@ -7,3 +7,4 @@ uint32_t m = 2147483648;
 uint32_t next_RANDU() {
 	lcg_state = (lcg_state * a) % m;
 	return lcg_state;
+}
