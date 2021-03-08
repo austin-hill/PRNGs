@@ -13,7 +13,7 @@ double mc_test(uint16_t n_dim, uint32_t n_iterations) {
 		current_point = 0;
 		for (uint32_t j = 0; j < n_dim; j++) {
 			temp = next_lcg_64(); // Choose which generator to test
-			current_point += (double)temp * temp / divisor_31;
+			current_point += (double)temp * temp / divisor_64;
 		}
 		if (current_point <= 1) {
 			hypersphere_count++;
