@@ -1,4 +1,4 @@
-#include "PRNGs.h"
+ #include "PRNGs.h"
 #include <boost/math/distributions/chi_squared.hpp>
 #include <boost/math/distributions/poisson.hpp>
 using namespace std;
@@ -8,6 +8,7 @@ const uint8_t n_cells = 20;
 int hit_count[n_cells];
 double hit_cdf[n_cells];
 bool in_target;
+bool overlaps;
 
 double chi_squared(int X[], int mean) {
 	double chi2 = 0;
@@ -23,11 +24,18 @@ void n_dim_test(uint16_t n_dim, int success_mean, uint8_t part_per_dim_pow, uint
 	memset(hit_count, 0, sizeof(hit_count));
 
 	for (uint8_t k = 0; k < n_cells; k++) {
+		overlaps = true;
 		for (uint32_t i = 0; i < n_dim; i++) {
 			do {
 				target_cell[i][k] = (uint64_t)std::random_device{}() << 32 | std::random_device{}();
 			} while (target_cell[i][k] >= max_target_size);
+			for (uint32_t j = 0; j < k; j++) {
+				if (target_cell[i][k]+cell_size <= target_cell[i][j] || target_cell[i][k] >= target_cell[i][j]+cell_size) {
+					overlaps = false;
+				}
+			}
 		}
+		if (overlaps==true && k >= 1) { k--; }
 	}
 
 	for (uint32_t i = 0; i < n_iterations; i++) {
