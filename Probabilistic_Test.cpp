@@ -40,7 +40,7 @@ void n_dim_test(uint16_t n_dim, int success_mean, uint8_t part_per_dim_pow, uint
 
 	for (uint32_t i = 0; i < n_iterations; i++) {
 		for (uint32_t j = 0; j < n_dim; j++) {
-			current_point[j] = next_lcg_64() * ((uint64_t)1 << 33);
+			current_point[j] = next_lcg_64(); // * ((uint64_t)1 << 33) if using RANDU
 		}
 		for (uint8_t k = 0; k < n_cells; k++) {
 			in_target = 1;
